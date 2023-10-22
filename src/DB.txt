@@ -1,0 +1,179 @@
+webapp에 있는 main에서 실행하시면 됩니다.
+제가... 모든 디자인을... 알고보니 화면 비율 90%로 해놓고 맞췄더라구요.. 
+다시 고치기엔 마감 2시간 전에 발견해서 고칠수가 없었습니다..
+실행 화면 ctrl - 해서 90%로 확인 부탁드립니다ㅜㅜ
+찍은 영상 참고해서 생각해주시면 될 것 같습니다ㅠㅠ
+
+
+[회원 테이블 생성]
+
+drop sequence memberseq ;
+
+create sequence memberseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+ 
+drop table member cascade constraints purge ;
+create table member(
+	no number primary key,
+	id varchar2(12) not null,
+	password varchar2(12) not null,
+	name varchar2(20) not null,
+	postcode varchar2(10) not null,
+	address varchar2(50) not null,
+	detailAddress varchar2(50) not null,
+	rrn1 varchar2(10) not null,
+	rrn2 varchar2(10) not null,
+	hp1 varchar2(4) not null,
+	hp2 varchar2(4) not null,
+	hp3 varchar2(4) not null,
+	email varchar2(30) not null,
+	joindate varchar2(20) 				
+);
+
+insert into member values(memberseq.nextval,'admin', '1234','관리자', '없음', '없음', '없음','1', '1','1','2','3','없음','1');
+commit;
+
+col id for a10
+col password for a10
+col name for a10
+
+select no, id, password, name from member ;
+
+[카테고리 테이블]
+
+drop sequence categoryseq ;
+create sequence categoryseq
+increment by 1
+start with 1
+minvalue 1
+maxvalue 10000
+nocache;
+
+drop table category cascade constraints purge ;
+create table category(
+	cnum 	number primary key,
+	code 	varchar2(20) not null,
+	cname 	varchar2(50) not null
+);
+
+
+[제품 테이블]
+drop sequence productseq;
+create sequence productseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table product cascade constraints purge ;
+create table product(
+	pnum 		int not null primary key,
+	pname 		varchar2(50) not null,
+	pcategory_fk  	varchar2(50) not null, 
+	pimage   		varchar2(30),
+	pqty   int default 0,
+	price   		int default 0,
+	pcontents 	varchar2(2000),
+	point   		int default 0,
+	pinputdate 	varchar2(10)
+);
+
+col pname for a12
+col pcategory_fk for a12
+col pimage for a12
+col pcontents for a12
+select * from product;
+
+
+[제품 주문 테이블]
+drop sequence orderseq ;
+create sequence orderseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+ 
+drop table orders cascade constraints purge ;
+create table orders(
+	orderId number, -- 주문번호(orderseq)
+	memno number, -- 회원번호 member
+	pnum number, -- 상품번호 product
+	qty number, -- 주문 수량
+	amount number -- 전체가격
+);
+
+[고객센터 문의 테이블]
+drop sequence board_seq ;
+create sequence board_seq
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table board cascade constraints purge ;
+create table board(
+	num number not null primary key,
+	writer varchar2(20) not null,
+	email varchar2(20),
+	subject varchar2(50) not null,
+	passwd varchar2(12) not null,
+	reg_date date not null,
+	readcount int default 0,
+	ref number  default 0 not null,
+	re_step number default 0 not null,
+	re_level number default 0 not null,
+	content varchar2(2000) not null,
+	ip varchar2(15)  not null
+);
+
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a1','a1','a1','1234','2015-1-1',1,0,0,'내용1','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a2','a2','a2','1234','2015-1-1',2,0,0,'내용2','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a21','a21','a21','1234','2015-1-1',2,4,1,'내용21','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a22','a22','a22','1234','2015-1-1',2,1,1,'내용22','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a221','a221','a221','1234','2015-1-1',2,3,2,'내용221','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a222','a222','a222','1234','2015-1-1',2,2,2,'내용222','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a3','a3','a3','1234','2015-1-1',7,0,0,'내용3','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a31','a31','a31','1234','2015-1-1',7,6,1,'내용31','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a311','a311','a311','1234','2015-1-1',7,7,2,'내용311','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a32','a32','a32','1234','2015-1-1',7,2,1,'내용32','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a321','a321','a321','1234','2015-1-1',7,5,2,'내용321','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a322','a322','a322','1234','2015-1-1',7,3,2,'내용322','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a3221','a3221','a3221','1234','2015-1-1',7,4,3,'내용3221','127.0.0.1');
+
+insert into board(num,writer,email,subject,passwd,reg_date,ref,re_step,re_level,content,ip)
+values(board_seq.nextval,'a33','a33','a33','1234','2015-1-1',7,1,1,'내용33','127.0.0.1');
+
+commit;
